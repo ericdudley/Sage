@@ -1,0 +1,294 @@
+/*
+Credit card statement analysis application written for Intuit RIT recruiting challenge.
+Uses javascript to analyze data read off of credit card statements and recommends courses of action
+to the user to save money.
+Date: 2/7/16
+Author: Eric R Dudley
+Title: Sage
+*/
+
+body
+{
+	position: relative;
+	box-sizing: border-box;
+	overflow: hidden;
+	font-family: Calibri, Verdana, Helvetica, serif;
+}
+
+.canvasjs-chart-credit
+{
+	display: none;
+}
+#file_choose_wrapper
+{
+	width: 600px;
+	height: 300px;
+	position: fixed;
+	left: 50%;
+	top: 50%;
+	margin-top: -150px;
+	margin-left: -300px;
+	z-index: 2;
+	background-color: #f6f6f6;
+	padding: 20px;
+	transition: opacity 0.5s;
+	border-radius: 20px;
+}
+
+#file_choose_wrapper .circle
+{
+	width: 100px;
+	height: 100px;
+	background-color: #999999;
+	border: #A6A8BA 1px;
+	border-style: dotted;
+	border-radius: 300px;
+	position: absolute;
+	right: 20px;
+	top: 20px;
+	opacity: 0;
+	transition: background-color 1s, width 0.5s, height 0.5s, opacity 0.5s;
+	z-index: 2;
+}
+
+#file_choose_wrapper .bar
+{
+	position: absolute;
+	top: 50%;
+	left: 90%;
+	right: 10%;
+	height: 50px;
+	margin-top: -25px;
+	background-color: #999999;
+	transition: background-color 1.2s, left 1.2s, right 0.4s;
+	z-index: 1;
+}
+
+#file_choose_wrapper .filename
+{
+	position: absolute;
+	right: 150px;
+	top: 150px;
+	font-size: 30px;
+	opacity: 0;
+	transition: opacity 1s;
+	z-index: 3;
+}
+
+#file_choose_wrapper .start_button
+{
+	position: absolute;
+	bottom: 0px;
+	left: 20px;
+	background-color: #D6D8EA;
+	padding: 30px;
+	opacity: 0;
+	transition: opacity 0.5s;
+	border-radius: 15px;
+}
+
+#file_choose_wrapper .start_button:hover
+{
+	background-color: #C6C8DA;
+	cursor: pointer;
+}
+
+.start_here
+{
+	position: absolute;
+	top: 40px;
+	left: 50px;
+	opacity: 1;
+}
+
+.cat_head
+{
+	font-size: 2.5em;
+}
+#page_cover
+{
+	z-index: 1;
+	position: fixed;
+	left: 0%;
+	right: 0%;
+	top: 0%;
+	bottom: 0%;
+	opacity: 1;
+	background-color: rgba(0,0,0,1);
+	background-image: url("money_bg_blur.jpg");
+}
+
+#logo
+{
+	z-index: 3;
+	position: fixed;
+	top: 10px;
+	left: 10px;
+	width: 50px;
+}
+
+#logo:hover
+{
+	cursor: pointer;
+}
+#page_header
+{
+	position: absolute;
+	left: 55px;
+	top: -40px;
+	z-index: 3;
+	font-size: 3em;
+	color: #CFB53B;
+}
+
+#start_over
+{
+	position: fixed;
+	top: -8px;
+	left: 180px;
+	z-index: 3;
+	font-size: 2em;
+	padding: 5px;
+	color: black;
+	background-color: #D6D8EA;
+	border-radius: 15px;
+	opacity: 0.8;
+	transition: left 0.5s;
+	display: none;
+}
+
+#start_over:hover
+{
+	background-color: #C6C8DA;
+	cursor: pointer;	
+	opacity: 1;
+}
+
+.page_content
+{
+	position: relative;
+	text-align: center;
+}
+
+.divider
+{
+	width: 40px;
+	margin: 0 auto;
+	height: 50px;
+	transition: width 1s;
+	background-color: #CFB53B;
+}
+
+.divider h2
+{
+	padding: 5px;
+	color: black;
+	background-color: #D6D8EA;
+	border-radius: 15px;
+	opacity: 0.8;
+	width: 150px;
+	margin: 0 auto;
+}
+
+.divider h2:hover
+{
+	background-color: #C6C8DA;
+	cursor: pointer;	
+	opacity: 1;
+}
+
+.less
+{
+	height: 200px;
+}
+
+.costs_section
+{
+	overflow: hidden;
+}
+#chartContainer canvas, #chartContainer
+{
+	text-align: center;
+}
+
+label
+{
+	font-size: 1.4em;
+}
+
+ul
+{
+	list-style: none;
+}
+
+ul li
+{
+	margin: 20px;
+	width: 250px;
+	background-color: #EEEEEE;
+	height: 250px;
+	display: inline-block;
+	overflow: hidden;
+	padding: 20px;
+}
+
+ul li h3
+{
+	font-size: 1.6em;
+	font-style: bold;
+}
+
+ul li p
+{
+	font-size: 1.3em;
+}
+
+.recs ul li
+{
+	width: 450px;
+	height: 278px;
+}
+
+.red
+{
+	color: #ff0000;
+}
+.recs ul li p
+{
+	text-align: left;
+	text-indent: 20px;
+}
+
+.recs .savings
+{
+	color: #00ff00;
+	font-size: 1.8em;
+}
+
+.total_savings, .monthly_savings
+{
+	font-size: 2.3em;
+	color: #00ff00;
+}
+
+.total_savings
+{
+	font-size: 2.5em;
+	font-style: bold;
+}
+
+.overview p
+{
+	font-size: 1.3em;
+}
+#time_saving_label
+{
+	font-size: 2em;
+}
+
+@media screen and (max-width: 1280px) {
+	#header
+	{
+		text-align: right;
+	}
+}
